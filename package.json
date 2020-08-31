@@ -1,0 +1,14 @@
+{
+  "name": "@deskeen/web-builder",
+  "version": "0.1.0",
+  "description": "Node.js Web Builder",
+  "author": "Morgan Schmiedt",
+  "license": "MIT",
+  "repository": "https://github.com/deskeen/web-builder",
+  "keywords": [
+    "build",
+    "website",
+    "node.js"
+  ],
+  "main": "src/engine.js"
+}
