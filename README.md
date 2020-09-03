@@ -10,20 +10,19 @@ const builder = require('@deskeen/web-builder')
 
 await builder.build({
   source: [
-    // List of files or directories
+    // Either a file or a directory
   ],
   modules: [
-    // List of modules
-    // Module name
+    // Either:
+    // A module name
     'module-name',
     // OR
     // An array containing the module name and the module options
     ['module-name-with-options', {  }],
     // OR
-    // A function
+    // A custom function (See "Create your own modules" chapter)
     moduleFunction,
   ],
-  // Log
   log: false,
 })
 ```
