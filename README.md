@@ -34,6 +34,10 @@ await builder.build({
 
 - [@deskeen/web-builder-replace-constants](https://github.com/deskeen/web-builder-replace-constants): Replace tags with fixed values. *Useful if would like to replace certain values like the Hostname for example.*
 
+- [@deskeen/web-builder-inline-svg](https://github.com/deskeen/web-builder-inline-svg): Replace tags with the content of a SVG file.
+
+- [@deskeen/web-builder-inline-json](https://github.com/deskeen/web-builder-inline-json): Replace tags with the content of a JSON file.
+
 - [@deskeen/web-builder-create-sitemap-xml](https://github.com/deskeen/web-builder-create-sitemap-xml): Create a sitemap.xml file.
 
 - [@deskeen/web-builder-create-sitemapindex-xml](https://github.com/deskeen/web-builder-create-sitemapindex-xml): Create a sitemapindex file.
