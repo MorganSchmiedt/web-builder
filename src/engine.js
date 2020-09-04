@@ -64,13 +64,15 @@ const build = async opt => {
   }
 
   for (const entry of opt.modules) {
-    let moduleName
+    let moduleName = 'Unnamed'
     let moduleOpt
     let moduleFct
 
     if (typeof entry === 'string') {
       moduleFct = require(entry)
       moduleName = entry
+    } else if (typeof entry === 'function') {
+      moduleFct = entry
     } else {
       const param1 = entry[0]
 
@@ -79,7 +81,6 @@ const build = async opt => {
         moduleName = entry
       } else {
         moduleFct = param1
-        moduleName = 'Unnamed'
       }
 
       moduleOpt = entry[1]
@@ -96,14 +97,14 @@ const build = async opt => {
   }
 
   await Promise.all(
-    Array.from(fileList.entries()).map(([path, content]) => {
+    Array.from(fileList.entries()).map(async([path, content]) => {
       const initialHash = fileHashList.get(path)
 
       // File were creating during building process
       if (initialHash == null) {
         log(`Creating ${path}`)
 
-        return writeFile(path, content)
+        await writeFile(path, content)
       }
 
       const hash = getMD5Hash(content)
@@ -111,7 +112,7 @@ const build = async opt => {
       if (initialHash !== hash) {
         log(`Updating ${path}`)
 
-        return writeFile(path, content)
+        await writeFile(path, content)
       }
     }))
 }
@@ -155,7 +156,5 @@ const getMD5Hash = data =>
     .update(data)
     .digest('hex')
 
-module.exports.getTagList = getTagList
-module.exports.getTag = getTag
-module.exports.findAsset = findAsset
 module.exports.build = build
+module.exports.writeFile = writeFile

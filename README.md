@@ -27,6 +27,13 @@ await builder.build({
 })
 ```
 
+The `build` function accepts the following properties:
+- `source`: a list of files or directories that will be passed to the modules.
+- `modules`: a list of modules. A module can be a module name, an array containing a module name and the module options, or a function. If you add a module name, make sure to add it to to the `package.json` file and install it beforehand. If you want a function, please read the *Create your own modules* chapter.
+- `log`: Whether logs are shown.
+
+A `writeFile(filepath, data)` function is also available.
+
 
 ## Available Modules
 
@@ -66,7 +73,7 @@ Three functions are included in the `lib` object:
 - `log(text)`: Log text (if the user turned it on). 
 
 
-## Example of Module
+## Example of module
 
 Imagine your project contains JSON files that you would like to minify. You can create a module to do that:
 
@@ -94,11 +101,11 @@ const builder = require('@deskeen/web-builder')
 
 await builder.build({
   source: [
-    '/path/html/index.html',
-    '/path/data/data.json',
+    '/www/html/index.html',
+    '/www/data/data.json',
   ],
   modules: [
-    [minifyJson]
+    minifyJson
   ]
 })
 ```
