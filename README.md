@@ -37,25 +37,25 @@ A `writeFile(filepath, data)` function is also available.
 
 ## Available Modules
 
-- [@deskeen/web-builder-rename-files](https://github.com/deskeen/web-builder-rename-files): Change the path or the names of the files. *Useful if you would like to move the output files to a deploy directory for example.*
+- [rename-files](https://github.com/deskeen/web-builder-rename-files): Change the path or the names of the files. *Useful if you would like to move the output files to a deploy directory for example.*
 
-- [@deskeen/web-builder-replace-constants](https://github.com/deskeen/web-builder-replace-constants): Replace tags with fixed values. *Useful if you would like to replace certain values like the Hostname for example.*
+- [replace-constants](https://github.com/deskeen/web-builder-replace-constants): Replace tags with fixed values. *Useful if you would like to replace certain values like the Hostname for example.*
 
-- [@deskeen/web-builder-inline-svg](https://github.com/deskeen/web-builder-inline-svg): Replace tags with the content of a SVG file.
+- [inline-svg](https://github.com/deskeen/web-builder-inline-svg): Replace tags with the content of a SVG file.
 
-- [@deskeen/web-builder-inline-json](https://github.com/deskeen/web-builder-inline-json): Replace tags with the content of a JSON file.
+- [inline-json](https://github.com/deskeen/web-builder-inline-json): Replace tags with the content of a JSON file.
 
-- [@deskeen/web-builder-inline-markdown](https://github.com/deskeen/web-builder-inline-markdown): Replace tags with the content of a Markdown file.
+- [inline-markdown](https://github.com/deskeen/web-builder-inline-markdown): Replace tags with the content of a Markdown file.
 
-- [@deskeen/web-builder-create-sitemap-xml](https://github.com/deskeen/web-builder-create-sitemap-xml): Create a sitemap.xml file.
+- [create-sitemap-xml](https://github.com/deskeen/web-builder-create-sitemap-xml): Create a sitemap.xml file.
 
-- [@deskeen/web-builder-create-sitemapindex-xml](https://github.com/deskeen/web-builder-create-sitemapindex-xml): Create a sitemapindex file.
+- [create-sitemapindex-xml](https://github.com/deskeen/web-builder-create-sitemapindex-xml): Create a sitemapindex file.
 
-- [@deskeen/web-builder-create-robots-txt](https://github.com/deskeen/web-builder-create-robots-txt): Create a robots.txt file.
+- [create-robots-txt](https://github.com/deskeen/web-builder-create-robots-txt): Create a robots.txt file.
 
-- [@deskeen/web-builder-minify-html](https://github.com/deskeen/web-builder-minify-html): Minify HTML files.
+- [minify-html](https://github.com/deskeen/web-builder-minify-html): Minify HTML files.
 
-- [@deskeen/web-builder-add-hash-filename](https://github.com/deskeen/web-builder-add-hash-filename): Add file hash to file name. *Useful if you would like to cache assets."
+- [add-hash-filename](https://github.com/deskeen/web-builder-add-hash-filename): Add file hash to file name. *Useful if you would like to cache assets.*
 
 
 ## Create your own modules
