@@ -41,6 +41,8 @@ A `writeFile(filepath, data)` function is also available.
 
 - [replace-constants](https://github.com/deskeen/web-builder-replace-constants): Replace tags with fixed values. *Useful if you would like to replace certain values like the Hostname for example.*
 
+- [inline-sass](https://github.com/deskeen/web-builder-inline-sass): Replace tags with the content of a SASS file.
+
 - [inline-svg](https://github.com/deskeen/web-builder-inline-svg): Replace tags with the content of a SVG file.
 
 - [inline-json](https://github.com/deskeen/web-builder-inline-json): Replace tags with the content of a JSON file.
