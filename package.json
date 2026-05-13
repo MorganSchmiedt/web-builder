@@ -1,14 +1,19 @@
 {
-  "name": "@deskeen/web-builder",
-  "version": "0.2.0",
+  "name": "@morganschmiedt/web-builder",
+  "version": "0.3.0",
   "description": "Node.js Web Builder",
   "author": "Morgan Schmiedt",
   "license": "MIT",
-  "repository": "https://github.com/deskeen/web-builder",
+  "repository": "https://github.com/MorganSchmiedt/web-builder",
   "keywords": [
     "build",
     "website",
     "node.js"
   ],
-  "main": "src/engine.js"
+  "type": "module",
+  "main": "src/engine.js",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "globals": "^15.8.0"
+  }
 }

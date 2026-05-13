@@ -1,36 +1,14 @@
-'use strict'
-/* eslint-env node */
+// @ts-check
 
-const options = {
-  encoding: 'utf8',
-}
-
-const {
-  writeFile,
-} = require('fs')
-
-const {
-  dirname,
-} = require('path')
-
-const createDirectory = require('./create-dir.js')
+import { writeFile, mkdir } from 'node:fs/promises'
+import { dirname } from 'path'
 
 /**
- * Write date to local file.
- * @param {string} filename File name
- * @param {boolean} data File content
+ * Write data to a local file.
+ * @param {string} filepath File path
+ * @param {string} data File content
  */
-module.exports = async(filename, data) => {
-  // Create directory in case it does not exist
-  await createDirectory(dirname(filename))
-
-  await new Promise((resolve, reject) =>
-    writeFile(filename, data, options, err => {
-      if (err != null) {
-        reject(err)
-        return
-      }
-
-      resolve()
-    }))
+export default async(filepath, data) => {
+  await mkdir(dirname(filepath), { recursive: true })
+  await writeFile(filepath, data)
 }

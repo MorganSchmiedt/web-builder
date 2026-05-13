@@ -1,33 +1,27 @@
+// @ts-check
 
-'use strict'
-/* eslint-env node */
+import { access } from 'node:fs/promises'
+import { join } from 'path'
 
-const {
-  access,
-} = require('fs')
-
-const {
-  promisify,
-} = require('util')
-
-const {
-  join,
-} = require('path')
-
-const accessAsync = promisify(access)
-
-module.exports = async(file, assets) => {
-  for (const assetPath of assets) {
-    const filepath = join(assetPath, file)
+/**
+ * Tries to find a specific local file.
+ * 
+ * @param {string} filename
+ * @param {Array<string>} directoryList
+ * @returns {Promise<string>} File path
+ */
+export default async(filename, directoryList) => {
+  for (const assetPath of directoryList) {
+    const filepath = join(assetPath, filename)
 
     try {
-      await accessAsync(filepath)
+      await access(filepath)
 
       return filepath
-    } catch (err) {
+    } catch {
       // Not in this directory
     }
   }
 
-  throw `File not found ${file}`
+  throw `File not found ${filename}`
 }

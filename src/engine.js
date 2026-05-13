@@ -1,43 +1,40 @@
-'use strict'
-/* eslint-env node, es6 */
+// @ts-check
 
 const tagPrefix = '{{'
-
 const tagDelimiter = ':'
-
 const tagSuffix = '}}'
 
-const {
-  createHash,
-} = require('crypto')
+import { createHash } from 'crypto'
+import { readFile } from 'node:fs/promises'
 
-const {
-  readFile,
-} = require('fs')
+import readDir from './lib/read-dir.js'
+import writeFile from './lib/write-file.js'
+import findAsset from './lib/find-asset.js'
 
-const {
-  promisify,
-} = require('util')
+/** @typedef {{findAsset: function, getTagList: function, getTag: function, log: function }} BuildModuleDefaultFunctions */
+/** @typedef {function(Map<string, string>, object, BuildModuleDefaultFunctions): Promise<void>} ModuleFonction */
+/** @typedef {string|ModuleFonction|[string|ModuleFonction, Object]} BuildModuleParam */
 
-const readFileAsync = promisify(readFile)
-
-const readDir = require('./lib/read-dir.js')
-
-const writeFile = require('./lib/write-file.js')
-
-const findAsset = require('./lib/find-asset.js')
-
-const encoding = { encoding: 'utf8' }
-
+/**
+ * Build with given options.
+ * 
+ * @param {object} opt
+ * @param {Array<string>} [opt.source] List of directories or files to process
+ * @param {Array<BuildModuleParam>} [opt.modules] List of modules to use
+ * @param {boolean} [opt.log] Show logs
+ */
 const build = async opt => {
   if (opt == null) {
     throw 'Option parameter is null.'
   }
 
   const showLog = opt.log === true
+
+  /**
+   * @param {string} msg
+   */
   const log = msg => {
     if (showLog) {
-      /* eslint-disable-next-line no-console */
       console.log(msg)
     }
   }
@@ -46,54 +43,62 @@ const build = async opt => {
   const fileHashList = new Map()
 
   if (opt.source != null) {
-    await Promise.all(opt.source.map(path =>
-      readDir({
-        path,
-        filesOnly: true,
-      }).then(files => {
-        if (files == null) {
-          throw `Invalid source ${path}`
-        }
+    await Promise.all(opt.source.map(async path => {
+      const files = await readDir(path, { filesOnly: true })
 
-        return Promise.all(files.map(file =>
-          readFileAsync(file, encoding).then(fileContent => {
-            fileList.set(file, fileContent)
-            fileHashList.set(file, getMD5Hash(fileContent))
-          })))
-      })))
-  }
-
-  for (const entry of opt.modules) {
-    let moduleName = 'Unnamed'
-    let moduleOpt
-    let moduleFct
-
-    if (typeof entry === 'string') {
-      moduleFct = require(entry)
-      moduleName = entry
-    } else if (typeof entry === 'function') {
-      moduleFct = entry
-    } else {
-      const param1 = entry[0]
-
-      if (typeof param1 === 'string') {
-        moduleFct = require(param1)
-        moduleName = entry
-      } else {
-        moduleFct = param1
+      if (files == null) {
+        throw `Invalid source ${path}`
       }
 
-      moduleOpt = entry[1]
-    }
+      await Promise.all(files.map(async file => {
+        const fileContent = await readFile(file)
+          .then(buffer => buffer.toString())
+        fileList.set(file, fileContent)
+        fileHashList.set(file, getMD5Hash(fileContent))
+      }))
+    }))
+  }
 
-    log(`Executing module: ${moduleName}`)
+  if (opt.modules != null) {
+    for (const entry of opt.modules) {
+      /** @type {string} */
+      let moduleName = 'Unnamed'
+      /** @type {object} */
+      let moduleOpt = {}
+      /** @type {null|ModuleFonction} */
+      let moduleFct = null
 
-    await moduleFct(fileList, moduleOpt || {}, {
-      findAsset,
-      getTagList,
-      getTag,
-      log,
-    })
+      if (typeof entry === 'string') {
+        moduleFct = await import(entry)
+          .then(mod => mod.default)
+        moduleName = entry
+      } else if (typeof entry === 'function') {
+        moduleFct = entry
+      } else if (Array.isArray(entry)) {
+        const param1 = entry[0]
+
+        if (typeof param1 === 'string') {
+          moduleFct = await import(param1)
+            .then(mod => mod.default)
+          moduleName = param1
+        } else if (typeof param1 === 'function') {
+          moduleFct = param1
+        }
+
+        moduleOpt = entry[1]
+      } 
+
+      if (moduleFct != null) {
+        log(`Executing module: ${moduleName}`)
+
+        await moduleFct(fileList, moduleOpt ?? {}, {
+          findAsset,
+          getTagList,
+          getTag,
+          log,
+        })
+      }
+    } 
   }
 
   await Promise.all(
@@ -117,9 +122,16 @@ const build = async opt => {
     }))
 }
 
+/**
+ * Finds a list of tags in a text.
+ * 
+ * @param {string} tagName
+ * @param {string} text
+ */
 const getTagList = (tagName, text) => {
   const tag = tagPrefix + tagName + tagDelimiter
 
+  /** @type {Array<string>} */
   const tagList = []
 
   let cursor = 0
@@ -148,13 +160,23 @@ const getTagList = (tagName, text) => {
   return tagList
 }
 
+/**
+ * Generate a specific tag.
+ * 
+ * @param {string} tagName
+ * @param {string} tagValue
+ */
 const getTag = (tagName, tagValue) =>
   tagPrefix + tagName + tagDelimiter + tagValue + tagSuffix
 
+/**
+ * Generate MD5 Hash of a text
+ * 
+ * @param {string} data
+ */
 const getMD5Hash = data =>
   createHash('MD5')
     .update(data)
     .digest('hex')
 
-module.exports.build = build
-module.exports.writeFile = writeFile
+export default { build, writeFile }

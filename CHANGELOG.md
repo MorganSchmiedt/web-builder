@@ -1,3 +1,9 @@
+## v0.3.0 - 2026-05-13
+
+- Project now uses ES Modules (ESM).
+- JSDocs/Types added.
+
+
 ## v0.2.0 - 2020-09-04
 
 **🌟 New**
