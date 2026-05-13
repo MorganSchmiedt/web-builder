@@ -6,7 +6,7 @@ This tool allows you to build a website by performing a certain number of tasks 
 ## Usage
 
 ```javascript
-const builder = require('@morganschmiedt/web-builder')
+const builder = require('@deskeen/web-builder')
 
 await builder.build({
   source: [
